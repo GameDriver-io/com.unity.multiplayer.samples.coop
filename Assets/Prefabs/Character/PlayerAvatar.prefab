@@ -110,7 +110,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4600110157238723790, guid: 0d2d836e2e83b754fa1a1c4022d6d65d, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3177087589
+      value: 3737985212
       objectReference: {fileID: 0}
     - target: {fileID: 4600110157238723790, guid: 0d2d836e2e83b754fa1a1c4022d6d65d, type: 3}
       propertyPath: PrefabHashGenerator
@@ -219,6 +219,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4600110157238723781, guid: 0d2d836e2e83b754fa1a1c4022d6d65d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4727018541459492655}
+    - targetCorrespondingSourceObject: {fileID: 4600110157238723781, guid: 0d2d836e2e83b754fa1a1c4022d6d65d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6542273331768090631}
+    - targetCorrespondingSourceObject: {fileID: 4600110157238723781, guid: 0d2d836e2e83b754fa1a1c4022d6d65d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -5986627022316265793}
   m_SourcePrefab: {fileID: 100100000, guid: 0d2d836e2e83b754fa1a1c4022d6d65d, type: 3}
 --- !u!114 &741733315856861890 stripped
 MonoBehaviour:
@@ -285,6 +291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 331c67f15523ad7419792662b9768f44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  newInput: {fileID: 0}
   m_ServerCharacter: {fileID: 741733315856861890}
   m_PhysicsWrapper: {fileID: 6116655102486013040}
 --- !u!114 &4887850889182527394
@@ -649,6 +656,211 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6542273331768090631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6009713983291384756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 79fa0511b72ffd64faecab01c3d3ea01, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4781465086743528409}
+        m_TargetAssemblyTypeName: Unity.BossRoom.Gameplay.UserInput.ClientInputSender,
+          Unity.BossRoom.Gameplay
+        m_MethodName: InputSkill1
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c0debfdb-85a7-4dee-9185-c7240b9fb414
+    m_ActionName: Game/Skill1[/Keyboard/1]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4781465086743528409}
+        m_TargetAssemblyTypeName: Unity.BossRoom.Gameplay.UserInput.ClientInputSender,
+          Unity.BossRoom.Gameplay
+        m_MethodName: InputSkill2
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7ff59a2f-f6be-4a8b-8745-01c07178cb53
+    m_ActionName: Game/Skill2[/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4781465086743528409}
+        m_TargetAssemblyTypeName: Unity.BossRoom.Gameplay.UserInput.ClientInputSender,
+          Unity.BossRoom.Gameplay
+        m_MethodName: InputSkill3
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7bb82207-f903-4c50-af1a-eef9d959c12c
+    m_ActionName: Game/Skill3[/Keyboard/3]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4781465086743528409}
+        m_TargetAssemblyTypeName: Unity.BossRoom.Gameplay.UserInput.ClientInputSender,
+          Unity.BossRoom.Gameplay
+        m_MethodName: InputSkill3
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c9fcaaa9-6e86-42f4-8209-364d94d28fa0
+    m_ActionName: Game/Skill4[/Keyboard/4]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4781465086743528409}
+        m_TargetAssemblyTypeName: Unity.BossRoom.Gameplay.UserInput.ClientInputSender,
+          Unity.BossRoom.Gameplay
+        m_MethodName: InputEmote1
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2bb11108-2af0-4460-b1e5-d0d387233d5e
+    m_ActionName: Game/Emote1[/Keyboard/5]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4781465086743528409}
+        m_TargetAssemblyTypeName: Unity.BossRoom.Gameplay.UserInput.ClientInputSender,
+          Unity.BossRoom.Gameplay
+        m_MethodName: InputEmote2
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9849a1b9-3fe4-4ec3-8b1a-d10c43cba5df
+    m_ActionName: Game/Emote2[/Keyboard/6]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4781465086743528409}
+        m_TargetAssemblyTypeName: Unity.BossRoom.Gameplay.UserInput.ClientInputSender,
+          Unity.BossRoom.Gameplay
+        m_MethodName: InputEmote3
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 3236fb7c-94a6-45bf-b986-0258329492a3
+    m_ActionName: Game/Emote3[/Keyboard/7]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4781465086743528409}
+        m_TargetAssemblyTypeName: Unity.BossRoom.Gameplay.UserInput.ClientInputSender,
+          Unity.BossRoom.Gameplay
+        m_MethodName: InputEmote4
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 21257601-3bc3-4d70-ada9-1923be01b8b6
+    m_ActionName: Game/Emote4[/Keyboard/8]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4781465086743528409}
+        m_TargetAssemblyTypeName: Unity.BossRoom.Gameplay.UserInput.ClientInputSender,
+          Unity.BossRoom.Gameplay
+        m_MethodName: InputMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 30620984-e3ac-4dab-aa5b-8d93f5e40830
+    m_ActionName: Game/Move[/Mouse/leftButton]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Game
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &-5986627022316265793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6009713983291384756}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ce9a156b78802346938b7ea917387e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  skill1: 0
+  skill2: 0
+  skill3: 0
+  skill4: 0
+  move: 0
+  emote1: 0
+  emote2: 0
+  emote3: 0
+  emote4: 0
 --- !u!4 &6009713983291384766 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4600110157238723791, guid: 0d2d836e2e83b754fa1a1c4022d6d65d, type: 3}

@@ -1,13 +1,16 @@
 using System;
+using JetBrains.Annotations;
 using Unity.BossRoom.Gameplay.Actions;
 using Unity.BossRoom.Gameplay.Configuration;
 using Unity.BossRoom.Gameplay.GameplayObjects;
 using Unity.BossRoom.Gameplay.GameplayObjects.Character;
+using Unity.Multiplayer.Samples.BossRoom;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace Unity.BossRoom.Gameplay.UserInput
 {
@@ -26,6 +29,8 @@ namespace Unity.BossRoom.Gameplay.UserInput
         const float k_TargetMoveTimeout = 0.45f;  //prevent moves for this long after targeting someone (helps prevent walking to the guy you clicked).
 
         float m_LastSentMove;
+
+        public PlayerNewInput newInput;
 
         // Cache raycast hit array so that we can use non alloc raycasts
         readonly RaycastHit[] k_CachedHit = new RaycastHit[4];
@@ -121,6 +126,7 @@ namespace Unity.BossRoom.Gameplay.UserInput
         void Awake()
         {
             m_MainCamera = Camera.main;
+            newInput = GetComponent<PlayerNewInput>();
         }
 
         public override void OnNetworkSpawn()
@@ -471,70 +477,191 @@ namespace Unity.BossRoom.Gameplay.UserInput
             }
         }
 
+// here is our input. We need to convert this to the new input system
+//if this implementation doesnt work, will will refactor all of these as functions for the input system to take
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1) && CharacterClass.Skill1)
+            #region The old input system
+            //1 key
+            //if (Input.GetKeyDown(KeyCode.Alpha1) && CharacterClass.Skill1)
+            // if(newInput.skill1 == true && CharacterClass.Skill1)
+            // {
+            //     RequestAction(actionState1.actionID, SkillTriggerStyle.Keyboard);
+            // }
+            // //else if (Input.GetKeyUp(KeyCode.Alpha1) && CharacterClass.Skill1)
+            // else if (newInput.skill1 == false && CharacterClass.Skill1)
+            // {
+            //     RequestAction(actionState1.actionID, SkillTriggerStyle.KeyboardRelease);
+            // }
+
+            // //2 key
+            // if (Input.GetKeyDown(KeyCode.Alpha2) && CharacterClass.Skill2)
+            // {
+            //     RequestAction(actionState2.actionID, SkillTriggerStyle.Keyboard);
+            // }
+            // else if (Input.GetKeyUp(KeyCode.Alpha2) && CharacterClass.Skill2)
+            // {
+            //     RequestAction(actionState2.actionID, SkillTriggerStyle.KeyboardRelease);
+            // }
+
+            // //3 key
+            // if (Input.GetKeyDown(KeyCode.Alpha3) && CharacterClass.Skill3)
+            // {
+            //     RequestAction(actionState3.actionID, SkillTriggerStyle.Keyboard);
+            // }
+            // else if (Input.GetKeyUp(KeyCode.Alpha3) && CharacterClass.Skill3)
+            // {
+            //     RequestAction(actionState3.actionID, SkillTriggerStyle.KeyboardRelease);
+            // }
+
+            //5 key
+            // if (Input.GetKeyDown(KeyCode.Alpha5))
+            // {
+            //     RequestAction(GameDataSource.Instance.Emote1ActionPrototype.ActionID, SkillTriggerStyle.Keyboard);
+            // }
+
+            // //6 key
+            // if (Input.GetKeyDown(KeyCode.Alpha6))
+            // {
+            //     RequestAction(GameDataSource.Instance.Emote2ActionPrototype.ActionID, SkillTriggerStyle.Keyboard);
+            // }
+
+            // //7 key
+            // if (Input.GetKeyDown(KeyCode.Alpha7))
+            // {
+            //     RequestAction(GameDataSource.Instance.Emote3ActionPrototype.ActionID, SkillTriggerStyle.Keyboard);
+            // }
+
+            // //8 key
+            // if (Input.GetKeyDown(KeyCode.Alpha8))
+            // {
+            //     RequestAction(GameDataSource.Instance.Emote4ActionPrototype.ActionID, SkillTriggerStyle.Keyboard);
+            // }
+
+            //if the mouse is over a UI element and no skill is being used?
+            // if (!EventSystem.current.IsPointerOverGameObject() && m_CurrentSkillInput == null)
+            // {
+            //     //IsPointerOverGameObject() is a simple way to determine if the mouse is over a UI element. If it is, we don't perform mouse input logic,
+            //     //to model the button "blocking" mouse clicks from falling through and interacting with the world.
+
+            //     //right mouse button
+            //     if (Input.GetMouseButtonDown(1))
+            //     {
+            //         RequestAction(CharacterClass.Skill1.ActionID, SkillTriggerStyle.MouseClick);
+            //     }
+
+            //     //left mouse button
+            //     //if (Input.GetMouseButtonDown(0))
+            //     // if(newInput.move == true || Input.GetMouseButtonDown(0))
+            //     // {
+            //     //     RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.MouseClick);
+            //     //     Debug.Log("You should be moving right now");
+            //     // }
+            //     // //else if (Input.GetMouseButton(0))
+            //     // else if(newInput.move == true || Input.GetMouseButtonDown(0))
+            //     // {
+            //     //     m_MoveRequest = true;
+            //     // }
+            // }
+            #endregion
+        }
+
+#region New input System Stuff
+
+        //this is interacting with the actual player input component
+        //need to find out why the else if statement is the exact same as the if.
+        public void InputMove(InputAction.CallbackContext context)
+        {
+            if(!EventSystem.current.IsPointerOverGameObject() && m_CurrentSkillInput == null)
+            {
+                if(context.started)
+                {
+                    Debug.Log("Now how do I implement this into the game propper?");
+                    RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.MouseClick);
+                }
+                else if (context.started)
+                {
+                    Debug.Log("How about now");
+                    m_MoveRequest = true;
+                }
+
+            }
+        }
+
+        public void InputAttack(InputAction.CallbackContext context)
+        {
+            RequestAction(CharacterClass.Skill1.ActionID, SkillTriggerStyle.MouseClick);
+        }
+
+        public void InputSkill1(InputAction.CallbackContext context)
+        {
+            if(context.started && CharacterClass.Skill1)
             {
                 RequestAction(actionState1.actionID, SkillTriggerStyle.Keyboard);
             }
-            else if (Input.GetKeyUp(KeyCode.Alpha1) && CharacterClass.Skill1)
+            else if (context.canceled && CharacterClass.Skill1)
             {
                 RequestAction(actionState1.actionID, SkillTriggerStyle.KeyboardRelease);
             }
-            if (Input.GetKeyDown(KeyCode.Alpha2) && CharacterClass.Skill2)
+        }
+
+        public void InputSkill2 (InputAction.CallbackContext context)
+        {
+            if(context.started && CharacterClass.Skill2)
             {
                 RequestAction(actionState2.actionID, SkillTriggerStyle.Keyboard);
             }
-            else if (Input.GetKeyUp(KeyCode.Alpha2) && CharacterClass.Skill2)
+            else if(context.canceled && CharacterClass.Skill1)
             {
                 RequestAction(actionState2.actionID, SkillTriggerStyle.KeyboardRelease);
             }
-            if (Input.GetKeyDown(KeyCode.Alpha3) && CharacterClass.Skill3)
+        }
+
+        public void InputSkill3(InputAction.CallbackContext context)
+        {
+            if(context.started && CharacterClass.Skill3)
             {
                 RequestAction(actionState3.actionID, SkillTriggerStyle.Keyboard);
             }
-            else if (Input.GetKeyUp(KeyCode.Alpha3) && CharacterClass.Skill3)
+            else if(context.canceled && CharacterClass.Skill3)
             {
                 RequestAction(actionState3.actionID, SkillTriggerStyle.KeyboardRelease);
             }
+        }
 
-            if (Input.GetKeyDown(KeyCode.Alpha5))
+        public void InputEmote1(InputAction.CallbackContext context)
+        {
+            if(context.started)
             {
                 RequestAction(GameDataSource.Instance.Emote1ActionPrototype.ActionID, SkillTriggerStyle.Keyboard);
             }
-            if (Input.GetKeyDown(KeyCode.Alpha6))
+        }
+
+        public void InputEmote2(InputAction.CallbackContext context)
+        {
+            if(context.started)
             {
                 RequestAction(GameDataSource.Instance.Emote2ActionPrototype.ActionID, SkillTriggerStyle.Keyboard);
             }
-            if (Input.GetKeyDown(KeyCode.Alpha7))
+        }
+
+        public void InputEmote3(InputAction.CallbackContext context)
+        {
+            if(context.started)
             {
                 RequestAction(GameDataSource.Instance.Emote3ActionPrototype.ActionID, SkillTriggerStyle.Keyboard);
             }
-            if (Input.GetKeyDown(KeyCode.Alpha8))
+        }
+
+        public void InputEmote4(InputAction.CallbackContext context)
+        {
+            if(context.started)
             {
                 RequestAction(GameDataSource.Instance.Emote4ActionPrototype.ActionID, SkillTriggerStyle.Keyboard);
             }
+        }  
 
-            if (!EventSystem.current.IsPointerOverGameObject() && m_CurrentSkillInput == null)
-            {
-                //IsPointerOverGameObject() is a simple way to determine if the mouse is over a UI element. If it is, we don't perform mouse input logic,
-                //to model the button "blocking" mouse clicks from falling through and interacting with the world.
-
-                if (Input.GetMouseButtonDown(1))
-                {
-                    RequestAction(CharacterClass.Skill1.ActionID, SkillTriggerStyle.MouseClick);
-                }
-
-                if (Input.GetMouseButtonDown(0))
-                {
-                    RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.MouseClick);
-                }
-                else if (Input.GetMouseButton(0))
-                {
-                    m_MoveRequest = true;
-                }
-            }
-        }
+#endregion        
 
         void UpdateAction1()
         {
