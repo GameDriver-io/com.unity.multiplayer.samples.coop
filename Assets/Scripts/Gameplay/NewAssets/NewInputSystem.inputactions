@@ -101,6 +101,17 @@
                 },
                 {
                     "name": "",
+                    "id": "5dc78019-2778-41c5-ae23-9486c8017a88",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skill1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "fb909a06-873e-4e81-bdbb-d505f40615ba",
                     "path": "<Keyboard>/2",
                     "interactions": "",
@@ -112,8 +123,30 @@
                 },
                 {
                     "name": "",
+                    "id": "53e73ba2-fb32-443c-91ce-1c94fe088428",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skill2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "1a904f67-231c-4ad9-b832-31e9e04d8902",
                     "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skill3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a62c2430-772a-47d9-9893-cc369587c00d",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -145,8 +178,30 @@
                 },
                 {
                     "name": "",
+                    "id": "fd9a5ed9-4e81-433e-b69f-19c92568c995",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Emote1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "272ca519-4bbe-4218-a71e-320ae96afacc",
                     "path": "<Keyboard>/6",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Emote2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "152a3e7d-ce03-4dbd-a556-5293d1af8481",
+                    "path": "<Gamepad>/dpad/left",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -167,8 +222,30 @@
                 },
                 {
                     "name": "",
+                    "id": "9f4d4810-3948-40be-a8f4-eacca88b2cc0",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Emote3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "2b071e8d-3801-4c30-857c-c8e07333d2a6",
                     "path": "<Keyboard>/8",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Emote4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "118870bb-42be-45bc-a1b9-c88b331f64ef",
+                    "path": "<Gamepad>/dpad/up",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -184,6 +261,45 @@
                     "processors": "",
                     "groups": "",
                     "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "064be2d7-c20d-4fb3-bff2-3102c5e3cac0",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Menus",
+            "id": "dcc9f059-57a2-4e26-8200-604b1360755a",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "8ed8f52c-ec45-4c35-9977-177da1d615be",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "83a6f87c-78d4-4929-bd53-95c1bd21de32",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

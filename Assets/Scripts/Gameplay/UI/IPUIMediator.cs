@@ -7,6 +7,8 @@ using Unity.BossRoom.Infrastructure;
 using Unity.Networking.Transport;
 using UnityEngine;
 using VContainer;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
@@ -43,6 +45,12 @@ namespace Unity.BossRoom.Gameplay.UI
         public IPHostingUI IPHostingUI => m_IPHostingUI;
 
         ISubscriber<ConnectStatus> m_ConnectStatusSubscriber;
+
+        [SerializeField] bool isInCreateMenu;
+        [SerializeField] bool isInJoinMenu;
+
+        [SerializeField] InputField joinTextField;
+        [SerializeField] InputField createTextField;
 
         [Inject]
         void InjectDependencies(ISubscriber<ConnectStatus> connectStatusSubscriber)
@@ -139,6 +147,8 @@ namespace Unity.BossRoom.Gameplay.UI
             m_JoinTabButtonTabBlockerTinter.SetToColor(1);
             m_HostTabButtonHighlightTinter.SetToColor(0);
             m_HostTabButtonTabBlockerTinter.SetToColor(0);
+            joinTextField.gameObject.SetActive(true);
+            createTextField.gameObject.SetActive(false);
         }
 
         public void ToggleCreateIPUI()
@@ -149,6 +159,8 @@ namespace Unity.BossRoom.Gameplay.UI
             m_JoinTabButtonTabBlockerTinter.SetToColor(0);
             m_HostTabButtonHighlightTinter.SetToColor(1);
             m_HostTabButtonTabBlockerTinter.SetToColor(1);
+            joinTextField.gameObject.SetActive(false);
+            createTextField.gameObject.SetActive(true);
         }
 
         public void Show()

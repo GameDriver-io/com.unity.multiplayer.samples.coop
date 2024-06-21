@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 using VContainer.Unity;
+using UnityEngine.InputSystem;
 
 namespace Unity.BossRoom.Gameplay.GameState
 {
@@ -38,6 +39,8 @@ namespace Unity.BossRoom.Gameplay.GameState
         UIProfileSelector m_UIProfileSelector;
         [SerializeField]
         UITooltipDetector m_UGSSetupTooltipDetector;
+
+        [SerializeField] Button m_StartLobbyButton;
 
         [Inject]
         AuthenticationServiceFacade m_AuthServiceFacade;
@@ -144,12 +147,21 @@ namespace Unity.BossRoom.Gameplay.GameState
         {
             m_LobbyUIMediator.ToggleJoinLobbyUI();
             m_LobbyUIMediator.Show();
+
         }
 
         public void OnDirectIPClicked()
         {
             m_LobbyUIMediator.Hide();
             m_IPUIMediator.Show();
+            
+            if(m_StartLobbyButton.enabled == true)
+            {
+                m_StartLobbyButton.Select();
+                Debug.Log("Is the Join IP Connection Button selecable via the keybaord?");
+            }
+
+
         }
 
         public void OnChangeProfileClicked()

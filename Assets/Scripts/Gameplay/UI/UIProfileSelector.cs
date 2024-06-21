@@ -21,6 +21,8 @@ namespace Unity.BossRoom.Gameplay.UI
         [SerializeField]
         Graphic m_EmptyProfileListLabel;
 
+        [SerializeField] public Button m_ProfileButton;
+
         List<ProfileListItemUI> m_ProfileListItems = new List<ProfileListItemUI>();
 
         [Inject] IObjectResolver m_Resolver;
