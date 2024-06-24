@@ -4,6 +4,7 @@ using Unity.BossRoom.Gameplay.GameState;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.BossRoom.Utils;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
@@ -47,6 +48,8 @@ namespace Unity.BossRoom.Gameplay.UI
 
         // once this is true, we're never clickable again!
         private bool m_IsDisabled;
+
+        [SerializeField] bool autoSelect = false;
 
         public void Initialize(int seatIndex)
         {
@@ -147,6 +150,14 @@ namespace Unity.BossRoom.Gameplay.UI
         public void OnClicked()
         {
             ClientCharSelectState.Instance.OnPlayerClickedSeat(m_SeatIndex);
+        }
+
+        public void Awake()
+        {
+            if(autoSelect)
+            {
+                OnClicked();
+            }
         }
 
     }

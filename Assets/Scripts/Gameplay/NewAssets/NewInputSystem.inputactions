@@ -282,7 +282,7 @@
             "id": "dcc9f059-57a2-4e26-8200-604b1360755a",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "KillWindow",
                     "type": "Button",
                     "id": "8ed8f52c-ec45-4c35-9977-177da1d615be",
                     "expectedControlType": "Button",
@@ -295,11 +295,22 @@
                 {
                     "name": "",
                     "id": "83a6f87c-78d4-4929-bd53-95c1bd21de32",
-                    "path": "",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "KillWindow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e3b72ec0-3ddd-4366-8b2e-29ecdf2181fc",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "KillWindow",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
