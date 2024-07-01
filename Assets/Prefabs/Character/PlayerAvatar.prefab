@@ -88,6 +88,10 @@ PrefabInstance:
       propertyPath: m_NetworkAnimator
       value: 
       objectReference: {fileID: 4639653625902786935}
+    - target: {fileID: 4309865414312164521, guid: 0d2d836e2e83b754fa1a1c4022d6d65d, type: 3}
+      propertyPath: turnSpeed
+      value: 150
+      objectReference: {fileID: 0}
     - target: {fileID: 4600110157238723776, guid: 0d2d836e2e83b754fa1a1c4022d6d65d, type: 3}
       propertyPath: m_AoePrefab
       value: 
@@ -834,6 +838,48 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 30620984-e3ac-4dab-aa5b-8d93f5e40830
     m_ActionName: Game/Move[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8ed8f52c-ec45-4c35-9977-177da1d615be
+    m_ActionName: Menus/KillWindow[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4781465086743528409}
+        m_TargetAssemblyTypeName: Unity.BossRoom.Gameplay.UserInput.ClientInputSender,
+          Unity.BossRoom.Gameplay
+        m_MethodName: InputRotateCharacter
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: d1917afb-67ac-4632-8141-cffff53b3368
+    m_ActionName: Game/Rotate
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4781465086743528409}
+        m_TargetAssemblyTypeName: Unity.BossRoom.Gameplay.UserInput.ClientInputSender,
+          Unity.BossRoom.Gameplay
+        m_MethodName: OnAim
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 39e4c731-385b-47e0-ac9f-fb205a2adbf7
+    m_ActionName: Game/Aim[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 71458666-dc17-44ee-b9b9-63ab35f68a39
+    m_ActionName: New action map/New action
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Game

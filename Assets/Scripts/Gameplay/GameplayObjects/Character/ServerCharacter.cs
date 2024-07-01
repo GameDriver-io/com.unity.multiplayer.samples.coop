@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Numerics;
 using Unity.BossRoom.ConnectionManagement;
 using Unity.BossRoom.Gameplay.Actions;
 using Unity.BossRoom.Gameplay.Configuration;
@@ -8,6 +10,8 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Action = Unity.BossRoom.Gameplay.Actions.Action;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Unity.BossRoom.Gameplay.GameplayObjects.Character
 {
@@ -204,6 +208,11 @@ namespace Unity.BossRoom.Gameplay.GameplayObjects.Character
                 m_ServerActionPlayer.CancelRunningActionsByLogic(ActionLogic.Target, true); //clear target on move.
                 m_Movement.SetMovementTarget(movementTarget);
             }
+        }
+
+        public void ServerSendRotation(Vector2 inputVector)
+        {
+            m_Movement.TurnCharacter(inputVector);
         }
 
         // ACTION SYSTEM

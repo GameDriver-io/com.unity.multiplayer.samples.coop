@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 using JetBrains.Annotations;
 using Unity.BossRoom.Gameplay.Actions;
 using Unity.BossRoom.Gameplay.Configuration;
@@ -11,6 +12,9 @@ using UnityEngine.AI;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Unity.BossRoom.Gameplay.UserInput
 {
@@ -101,6 +105,8 @@ namespace Unity.BossRoom.Gameplay.UserInput
 
         bool m_MoveRequest;
 
+        bool m_RotateRequest;
+
         Camera m_MainCamera;
 
         public event Action<Vector3> ClientMoveEvent;
@@ -123,10 +129,21 @@ namespace Unity.BossRoom.Gameplay.UserInput
 
         ServerCharacter m_TargetServerCharacter;
 
+        NewInputSystem inputSystem;
+
+        Vector2 mousePosition;
+        Vector3 newMousePosition;
+
         void Awake()
         {
             m_MainCamera = Camera.main;
             newInput = GetComponent<PlayerNewInput>();
+            
+            inputSystem = new NewInputSystem();
+
+            inputSystem.Game.Rotate.performed += InputRotateCharacter; 
+            inputSystem.Game.Aim.performed += OnAim;
+            inputSystem.Game.Move.performed += InputMove;
         }
 
         public override void OnNetworkSpawn()
@@ -218,6 +235,8 @@ namespace Unity.BossRoom.Gameplay.UserInput
 
         void FixedUpdate()
         {
+            Vector2 inputVector = inputSystem.Game.Rotate.ReadValue<Vector2>();
+
             //play all ActionRequests, in FIFO order.
             for (int i = 0; i < m_ActionRequestCount; ++i)
             {
@@ -252,13 +271,22 @@ namespace Unity.BossRoom.Gameplay.UserInput
                 return;
             }
 
+            //we are calling this function every frame and checking if the moverequest is true
+            //this is done so we can try to invoke it as a unity event
+            
+            // we can potetntailly refactor all of this into a function
+            //moving the character to a certain position
             if (m_MoveRequest)
             {
+                Debug.Log("The request has been sent");
                 m_MoveRequest = false;
                 if ((Time.time - m_LastSentMove) > k_MoveSendRateSeconds)
                 {
+                    Debug.Log("The REquest has been processed");
                     m_LastSentMove = Time.time;
-                    var ray = m_MainCamera.ScreenPointToRay(UnityEngine.Input.mousePosition);
+
+                    //find an input system equivalent to mouse position
+                    var ray = m_MainCamera.ScreenPointToRay(newMousePosition);
 
                     var groundHits = Physics.RaycastNonAlloc(ray,
                         k_CachedHit,
@@ -282,11 +310,20 @@ namespace Unity.BossRoom.Gameplay.UserInput
                             m_ServerCharacter.ServerSendCharacterInputRpc(hit.position);
 
                             //Send our client only click request
+                            //take a look at this as well
                             ClientMoveEvent?.Invoke(hit.position);
                         }
                     }
                 }
             }
+        }
+
+        public void OnAim(InputAction.CallbackContext context)
+        {
+            mousePosition = context.ReadValue<Vector2>();
+            newMousePosition = mousePosition;
+
+            Debug.Log(newMousePosition);
         }
 
         /// <summary>
@@ -314,7 +351,7 @@ namespace Unity.BossRoom.Gameplay.UserInput
                 int numHits = 0;
                 if (triggerStyle == SkillTriggerStyle.MouseClick)
                 {
-                    var ray = m_MainCamera.ScreenPointToRay(UnityEngine.Input.mousePosition);
+                    var ray = m_MainCamera.ScreenPointToRay(newMousePosition);
                     numHits = Physics.RaycastNonAlloc(ray, k_CachedHit, k_MouseInputRaycastDistance, m_ActionLayerMask);
                 }
 
@@ -552,18 +589,20 @@ namespace Unity.BossRoom.Gameplay.UserInput
 
             //     //left mouse button
             //     //if (Input.GetMouseButtonDown(0))
-            //     // if(newInput.move == true || Input.GetMouseButtonDown(0))
-            //     // {
-            //     //     RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.MouseClick);
-            //     //     Debug.Log("You should be moving right now");
-            //     // }
-            //     // //else if (Input.GetMouseButton(0))
-            //     // else if(newInput.move == true || Input.GetMouseButtonDown(0))
-            //     // {
-            //     //     m_MoveRequest = true;
-            //     // }
+            //     if(newInput.move == true || Input.GetMouseButtonDown(0))
+            //     {
+            //         RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.MouseClick);
+            //         Debug.Log("You should be moving right now");
+            //     }
+            //     //else if (Input.GetMouseButton(0))
+            //     else if(newInput.move == true || Input.GetMouseButtonDown(0))
+            //     {
+            //         m_MoveRequest = true;
+            //     }
             // }
             #endregion
+
+            
         }
 
 #region New input System Stuff
@@ -574,20 +613,17 @@ namespace Unity.BossRoom.Gameplay.UserInput
         {
             if(!EventSystem.current.IsPointerOverGameObject() && m_CurrentSkillInput == null)
             {
-                if(context.started)
-                {
-                    Debug.Log("Now how do I implement this into the game propper?");
-                    RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.MouseClick);
-                }
-                else if (context.started)
-                {
-                    Debug.Log("How about now");
-                    m_MoveRequest = true;
-                }
-
+                Debug.Log("Now how do I implement this into the game propper?");
+                RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.MouseClick);
             }
+            else
+            {
+                Debug.Log("How about now");
+                m_MoveRequest = true;
+           }
         }
 
+        //this is the first part of the if statement. so I actually should add the if 
         public void InputAttack(InputAction.CallbackContext context)
         {
             RequestAction(CharacterClass.Skill1.ActionID, SkillTriggerStyle.MouseClick);
@@ -659,6 +695,29 @@ namespace Unity.BossRoom.Gameplay.UserInput
             {
                 RequestAction(GameDataSource.Instance.Emote4ActionPrototype.ActionID, SkillTriggerStyle.Keyboard);
             }
+        }
+
+        //For rotating the character. We set up a request action. We will find out what that means so we can implement more information here
+        //Here is what we will try to do
+        //  Initate a move request.
+        //
+        public void InputRotateCharacter(InputAction.CallbackContext context)
+        {
+            // if(context.performed)
+            // {
+                RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.Keyboard);
+  
+                m_RotateRequest = true;
+
+                Vector2 inputVector = context.ReadValue<Vector2>();
+                //Vector3 newSpeed = inputVector;
+
+                m_ServerCharacter.ServerSendRotation(inputVector);
+            // }
+            // else
+            // {
+            //     m_RotateRequest = false;
+            // }
         }  
 
 #endregion        

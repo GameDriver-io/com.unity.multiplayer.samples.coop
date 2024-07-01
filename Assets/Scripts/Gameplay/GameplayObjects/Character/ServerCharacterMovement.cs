@@ -1,10 +1,16 @@
 using System;
+using System.Numerics;
 using Unity.BossRoom.Gameplay.Configuration;
 using Unity.BossRoom.Navigation;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Assertions;
+using UnityEngine.InputSystem;
+
+using Vector3 = UnityEngine.Vector3;
+using Vector2 = UnityEngine.Vector2;
+using Quaternion = UnityEngine.Quaternion;
 
 namespace Unity.BossRoom.Gameplay.GameplayObjects.Character
 {
@@ -46,6 +52,13 @@ namespace Unity.BossRoom.Gameplay.GameplayObjects.Character
         // this one is specific to knockback mode
         private Vector3 m_KnockbackVector;
 
+        //we will interact with the input system with this
+        private PlayerInput playerInput;
+
+        public float turnSpeed;
+
+
+
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         public bool TeleportModeActivated { get; set; }
 
@@ -58,6 +71,14 @@ namespace Unity.BossRoom.Gameplay.GameplayObjects.Character
         {
             // disable this NetworkBehavior until it is spawned
             enabled = false;
+
+            //things relating to the new input system
+            playerInput = GetComponent<PlayerInput>();
+            NewInputSystem newInput = new NewInputSystem();
+
+            //newInput.Game.Rotate.performed += TurnCharacter;
+            
+
         }
 
         public override void OnNetworkSpawn()
@@ -230,6 +251,8 @@ namespace Unity.BossRoom.Gameplay.GameplayObjects.Character
             }
             else
             {
+                Debug.Log("Lets Move!");
+
                 var desiredMovementAmount = GetBaseMovementSpeed() * Time.fixedDeltaTime;
                 movementVector = m_NavPath.MoveAlongPath(desiredMovementAmount);
 
@@ -247,6 +270,33 @@ namespace Unity.BossRoom.Gameplay.GameplayObjects.Character
             // After moving adjust the position of the dynamic rigidbody.
             m_Rigidbody.position = transform.position;
             m_Rigidbody.rotation = transform.rotation;
+        }
+
+        //for controller support. Will allow us to rotate the character so we can move much like a twin stick shooter. We will trigger this
+        //with the left stick
+
+        //we got to refactor this function. make all the nessessary inputs and 
+        public void TurnCharacter(Vector2 inputVector)
+        {
+            Debug.Log(inputVector);
+            // Vector2 inputVector = context.ReadValue<Vector2>();
+
+            // //converting vector 2 into vector 3 just to see if it works
+            // Vector3 newSpeed = inputVector;
+
+            Vector3 MovementVector;
+            
+            Vector3 m_EulerAngleVelocity = new Vector3(0, inputVector.x * turnSpeed, 0);
+
+            Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * Time.fixedDeltaTime);
+            m_Rigidbody.MoveRotation(m_Rigidbody.rotation * deltaRotation);
+
+            //m_Rigidbody.rotation = transform.rotation;
+        }
+
+        private void MoveForward()
+        {
+
         }
 
         /// <summary>
