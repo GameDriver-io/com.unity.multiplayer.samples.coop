@@ -104,7 +104,7 @@ namespace Unity.BossRoom.Gameplay.UserInput
         BaseActionInput m_CurrentSkillInput;
 
         bool m_MoveRequest;
-
+        bool m_ControllerMovement;
         bool m_RotateRequest;
 
         Camera m_MainCamera;
@@ -134,6 +134,11 @@ namespace Unity.BossRoom.Gameplay.UserInput
         Vector2 mousePosition;
         Vector3 newMousePosition;
 
+        Vector2 movementVecotr;
+        [SerializeField] float movementSensitivity; 
+
+        [SerializeField] Transform controllerRayObject;
+
         void Awake()
         {
             m_MainCamera = Camera.main;
@@ -143,7 +148,9 @@ namespace Unity.BossRoom.Gameplay.UserInput
 
             inputSystem.Game.Rotate.performed += InputRotateCharacter; 
             inputSystem.Game.Aim.performed += OnAim;
-            inputSystem.Game.Move.performed += InputMove;
+            //inputSystem.Game.Move.performed += InputMove;
+
+            controllerRayObject = GameObject.Find("ControllerRayObject").GetComponent<Transform>();
         }
 
         public override void OnNetworkSpawn()
@@ -235,6 +242,8 @@ namespace Unity.BossRoom.Gameplay.UserInput
 
         void FixedUpdate()
         {
+            Debug.Log(m_ControllerMovement);
+
             Vector2 inputVector = inputSystem.Game.Rotate.ReadValue<Vector2>();
 
             //play all ActionRequests, in FIFO order.
@@ -278,43 +287,74 @@ namespace Unity.BossRoom.Gameplay.UserInput
             //moving the character to a certain position
             if (m_MoveRequest)
             {
-                Debug.Log("The request has been sent");
-                m_MoveRequest = false;
-                if ((Time.time - m_LastSentMove) > k_MoveSendRateSeconds)
+                if(m_ControllerMovement)
                 {
-                    Debug.Log("The REquest has been processed");
-                    m_LastSentMove = Time.time;
+                    Debug.Log("The request has been sent but for a controller this time");
+                    m_MoveRequest = false;
 
-                    //find an input system equivalent to mouse position
-                    var ray = m_MainCamera.ScreenPointToRay(newMousePosition);
-
-                    var groundHits = Physics.RaycastNonAlloc(ray,
-                        k_CachedHit,
-                        k_MouseInputRaycastDistance,
-                        m_GroundLayerMask);
-
-                    if (groundHits > 0)
+                    if ((Time.time - m_LastSentMove) > k_MoveSendRateSeconds)
                     {
-                        if (groundHits > 1)
+                         //remember transform.forward is the z axis
+                        var ray = new Ray(controllerRayObject.transform.position, controllerRayObject.transform.up * -1);
+
+                        var groundHits = Physics.RaycastNonAlloc(ray, k_CachedHit, k_MouseInputRaycastDistance, m_GroundLayerMask);
+
+                        Vector3 directionOfRay = ray.direction;
+
+                        Debug.DrawRay(ray.origin, directionOfRay);
+
+                        if(groundHits > 1)
                         {
-                            // sort hits by distance
                             Array.Sort(k_CachedHit, 0, groundHits, m_RaycastHitComparer);
                         }
 
-                        // verify point is indeed on navmesh surface
-                        if (NavMesh.SamplePosition(k_CachedHit[0].point,
-                                out var hit,
-                                k_MaxNavMeshDistance,
-                                NavMesh.AllAreas))
+                        if(NavMesh.SamplePosition(k_CachedHit[0].point, out var hit, k_MaxNavMeshDistance, NavMesh.AllAreas))
                         {
                             m_ServerCharacter.ServerSendCharacterInputRpc(hit.position);
 
-                            //Send our client only click request
-                            //take a look at this as well
                             ClientMoveEvent?.Invoke(hit.position);
+                        }
+
+                    }
+                   
+                }
+                else
+                {
+                    Debug.Log("The request has been sent");
+                    m_MoveRequest = false;
+                    if ((Time.time - m_LastSentMove) > k_MoveSendRateSeconds)
+                    {
+                        Debug.Log("The REquest has been processed");
+                        m_LastSentMove = Time.time;
+
+                        //find an input system equivalent to mouse position
+                        var ray = m_MainCamera.ScreenPointToRay(newMousePosition);
+
+                        var groundHits = Physics.RaycastNonAlloc(ray, k_CachedHit, k_MouseInputRaycastDistance, m_GroundLayerMask);
+
+                        if (groundHits > 0)
+                        {
+                            if (groundHits > 1)
+                            {
+                                // sort hits by distance
+                                Array.Sort(k_CachedHit, 0, groundHits, m_RaycastHitComparer);
+                            }
+
+                            // verify point is indeed on navmesh surface
+                            if (NavMesh.SamplePosition(k_CachedHit[0].point, out var hit,
+                                k_MaxNavMeshDistance,
+                                NavMesh.AllAreas))
+                            {
+                                m_ServerCharacter.ServerSendCharacterInputRpc(hit.position);
+
+                                //Send our client only click request
+                                //take a look at this as well
+                                ClientMoveEvent?.Invoke(hit.position);
+                            }
                         }
                     }
                 }
+
             }
         }
 
@@ -574,60 +614,77 @@ namespace Unity.BossRoom.Gameplay.UserInput
             // {
             //     RequestAction(GameDataSource.Instance.Emote4ActionPrototype.ActionID, SkillTriggerStyle.Keyboard);
             // }
+            #endregion
+                        
+            //the original way of doing movement with the original input system
+
+            //we are keeping this in here for mouse movement only
+            //controllers will work in the input system
 
             //if the mouse is over a UI element and no skill is being used?
-            // if (!EventSystem.current.IsPointerOverGameObject() && m_CurrentSkillInput == null)
-            // {
-            //     //IsPointerOverGameObject() is a simple way to determine if the mouse is over a UI element. If it is, we don't perform mouse input logic,
-            //     //to model the button "blocking" mouse clicks from falling through and interacting with the world.
 
-            //     //right mouse button
-            //     if (Input.GetMouseButtonDown(1))
-            //     {
-            //         RequestAction(CharacterClass.Skill1.ActionID, SkillTriggerStyle.MouseClick);
-            //     }
+            if(m_CurrentSkillInput == null)
+            {
+                if(!EventSystem.current.IsPointerOverGameObject())
+                {
+                    //IsPointerOverGameObject() is a simple way to determine if the mouse is over a UI element. If it is, we don't perform mouse input logic,
+                    //to model the button "blocking" mouse clicks from falling through and interacting with the world.
 
-            //     //left mouse button
-            //     //if (Input.GetMouseButtonDown(0))
-            //     if(newInput.move == true || Input.GetMouseButtonDown(0))
-            //     {
-            //         RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.MouseClick);
-            //         Debug.Log("You should be moving right now");
-            //     }
-            //     //else if (Input.GetMouseButton(0))
-            //     else if(newInput.move == true || Input.GetMouseButtonDown(0))
-            //     {
-            //         m_MoveRequest = true;
-            //     }
-            // }
-            #endregion
+                    //right mouse button
+                    if (Input.GetMouseButtonDown(1))
+                    {
+                        RequestAction(CharacterClass.Skill1.ActionID, SkillTriggerStyle.MouseClick);
+                    }
 
+                    //left mouse button
+                    if (Input.GetMouseButtonDown(0))
+                    //if(newInput.move == true || Input.GetMouseButtonDown(0))
+                    {
+                        RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.MouseClick);
+                        Debug.Log("You should be moving right now");
+                    }
+                    else if (Input.GetMouseButton(0))
+                    //else if(newInput.move == true || Input.GetMouseButtonDown(0))
+                    {
+                        m_MoveRequest = true;
+                    }
+                }
+            }
+            
+            
             
         }
 
 #region New input System Stuff
 
+        //my implementation of the movement system using the new input system
         //this is interacting with the actual player input component
-        //need to find out why the else if statement is the exact same as the if.
-        public void InputMove(InputAction.CallbackContext context)
-        {
-            if(!EventSystem.current.IsPointerOverGameObject() && m_CurrentSkillInput == null)
-            {
-                Debug.Log("Now how do I implement this into the game propper?");
-                RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.MouseClick);
-            }
-            else
-            {
-                Debug.Log("How about now");
-                m_MoveRequest = true;
-           }
-        }
+        // //need to find out why the else if statement doesnt function exactly like the way in the update section that is commented
+        // public void InputMove(InputAction.CallbackContext context)
+        // {
+        //     if(context.control.device is Keyboard or Mouse)
+        //     {
+        //         if(!EventSystem.current.IsPointerOverGameObject() && m_CurrentSkillInput == null)
+        //         {
+        //             if(inputSystem.Game.Move.WasPressedThisFrame())
+        //             {
+        //                 Debug.Log("Now how do I implement this into the game propper?");
+        //                 RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.MouseClick);
+        //             }
+        //             else if(inputSystem.Game.Move.WasPressedThisFrame())
+        //             {
+        //                 Debug.Log("How about now");
+        //                 m_MoveRequest = true;
+        //             }
+        //         }
+        //     }
+        // }
 
         //this is the first part of the if statement. so I actually should add the if 
-        public void InputAttack(InputAction.CallbackContext context)
-        {
-            RequestAction(CharacterClass.Skill1.ActionID, SkillTriggerStyle.MouseClick);
-        }
+        // public void InputAttack(InputAction.CallbackContext context)
+        // {
+        //     RequestAction(CharacterClass.Skill1.ActionID, SkillTriggerStyle.MouseClick);
+        // }
 
         public void InputSkill1(InputAction.CallbackContext context)
         {
@@ -705,19 +762,36 @@ namespace Unity.BossRoom.Gameplay.UserInput
         {
             // if(context.performed)
             // {
-                RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.Keyboard);
+                // RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.Keyboard);
   
-                m_RotateRequest = true;
+                // m_RotateRequest = true;
 
-                Vector2 inputVector = context.ReadValue<Vector2>();
-                //Vector3 newSpeed = inputVector;
+                // Vector2 inputVector = context.ReadValue<Vector2>();
+                // //Vector3 newSpeed = inputVector;
 
-                m_ServerCharacter.ServerSendRotation(inputVector);
+                // m_ServerCharacter.ServerSendRotation(inputVector);
             // }
             // else
             // {
             //     m_RotateRequest = false;
             // }
+        }
+
+        //for moving the character. This is what we will do
+        //when we are moving the character by holding down the move button,
+        //we will shoot a ray from an empty gameobject that will blast a ray to the floor
+        //we will try to replicate the raycast based movement
+        public void InputMoveCharacter(InputAction.CallbackContext context)
+        {
+            m_MoveRequest = true;
+
+            if(context.performed)
+            {
+                RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.Keyboard);
+            
+                m_ControllerMovement = true;
+                Debug.Log(context);
+            }
         }  
 
 #endregion        
@@ -769,6 +843,8 @@ namespace Unity.BossRoom.Gameplay.UserInput
 
             action1ModifiedCallback?.Invoke();
         }
+        
+
 
         public class ActionState
         {

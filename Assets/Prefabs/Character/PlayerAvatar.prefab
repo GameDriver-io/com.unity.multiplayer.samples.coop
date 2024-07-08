@@ -90,7 +90,7 @@ PrefabInstance:
       objectReference: {fileID: 4639653625902786935}
     - target: {fileID: 4309865414312164521, guid: 0d2d836e2e83b754fa1a1c4022d6d65d, type: 3}
       propertyPath: turnSpeed
-      value: 150
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4600110157238723776, guid: 0d2d836e2e83b754fa1a1c4022d6d65d, type: 3}
       propertyPath: m_AoePrefab
@@ -114,11 +114,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4600110157238723790, guid: 0d2d836e2e83b754fa1a1c4022d6d65d, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3737985212
+      value: 3177087589
       objectReference: {fileID: 0}
     - target: {fileID: 4600110157238723790, guid: 0d2d836e2e83b754fa1a1c4022d6d65d, type: 3}
       propertyPath: PrefabHashGenerator
       value: PlayerAvatar
+      objectReference: {fileID: 0}
+    - target: {fileID: 4600110157238723790, guid: 0d2d836e2e83b754fa1a1c4022d6d65d, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 3737985212
       objectReference: {fileID: 0}
     - target: {fileID: 4600110157238723791, guid: 0d2d836e2e83b754fa1a1c4022d6d65d, type: 3}
       propertyPath: m_RootOrder
@@ -298,6 +302,8 @@ MonoBehaviour:
   newInput: {fileID: 0}
   m_ServerCharacter: {fileID: 741733315856861890}
   m_PhysicsWrapper: {fileID: 6116655102486013040}
+  movementSensitivity: 0
+  controllerRayObject: {fileID: 0}
 --- !u!114 &4887850889182527394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -826,7 +832,7 @@ MonoBehaviour:
       - m_Target: {fileID: 4781465086743528409}
         m_TargetAssemblyTypeName: Unity.BossRoom.Gameplay.UserInput.ClientInputSender,
           Unity.BossRoom.Gameplay
-        m_MethodName: InputMove
+        m_MethodName: InputMoveCharacter
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -878,8 +884,8 @@ MonoBehaviour:
     m_ActionName: Game/Aim[/Mouse/position]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 71458666-dc17-44ee-b9b9-63ab35f68a39
-    m_ActionName: New action map/New action
+    m_ActionId: 64aa27c7-0193-4555-a83e-493e3c1b34f1
+    m_ActionName: Game/Movement[/DualShock4GamepadHID/leftStick]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Game
