@@ -12,6 +12,7 @@ public class PlayerControllerRotation : MonoBehaviour
     [SerializeField] float maxMovementX;
     [SerializeField] float maxMovementY;
 
+    private Light controllerRayObjectLight;
     public NewInputSystem input;
 
     // Start is called before the first frame update
@@ -23,10 +24,13 @@ public class PlayerControllerRotation : MonoBehaviour
     void Awake()
     {
         //input.Game.Movement.performed += InputRotateObject;
+        controllerRayObjectLight = GameObject.Find("TestPointLight").GetComponent<Light>();
     }
 
     public void InputRotateObject(InputAction.CallbackContext context)
     {
+        controllerRayObjectLight.intensity = 10;
+
         movementVector = context.ReadValue<Vector2>();
 
         Debug.Log(context);

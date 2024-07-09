@@ -138,7 +138,7 @@ namespace Unity.BossRoom.Gameplay.UserInput
         [SerializeField] float movementSensitivity; 
 
         [SerializeField] Transform controllerRayObject;
-
+        [SerializeField] Light controllerRayObjectLight;
         void Awake()
         {
             m_MainCamera = Camera.main;
@@ -148,9 +148,9 @@ namespace Unity.BossRoom.Gameplay.UserInput
 
             inputSystem.Game.Rotate.performed += InputRotateCharacter; 
             inputSystem.Game.Aim.performed += OnAim;
-            //inputSystem.Game.Move.performed += InputMove;
 
             controllerRayObject = GameObject.Find("ControllerRayObject").GetComponent<Transform>();
+            controllerRayObjectLight = GameObject.Find("TestPointLight").GetComponent<Light>();
         }
 
         public override void OnNetworkSpawn()
@@ -287,41 +287,13 @@ namespace Unity.BossRoom.Gameplay.UserInput
             //moving the character to a certain position
             if (m_MoveRequest)
             {
-                if(m_ControllerMovement)
-                {
-                    Debug.Log("The request has been sent but for a controller this time");
-                    m_MoveRequest = false;
-
-                    if ((Time.time - m_LastSentMove) > k_MoveSendRateSeconds)
-                    {
-                         //remember transform.forward is the z axis
-                        var ray = new Ray(controllerRayObject.transform.position, controllerRayObject.transform.up * -1);
-
-                        var groundHits = Physics.RaycastNonAlloc(ray, k_CachedHit, k_MouseInputRaycastDistance, m_GroundLayerMask);
-
-                        Vector3 directionOfRay = ray.direction;
-
-                        Debug.DrawRay(ray.origin, directionOfRay);
-
-                        if(groundHits > 1)
-                        {
-                            Array.Sort(k_CachedHit, 0, groundHits, m_RaycastHitComparer);
-                        }
-
-                        if(NavMesh.SamplePosition(k_CachedHit[0].point, out var hit, k_MaxNavMeshDistance, NavMesh.AllAreas))
-                        {
-                            m_ServerCharacter.ServerSendCharacterInputRpc(hit.position);
-
-                            ClientMoveEvent?.Invoke(hit.position);
-                        }
-
-                    }
-                   
-                }
-                else
+                if (m_ControllerMovement == false)
                 {
                     Debug.Log("The request has been sent");
                     m_MoveRequest = false;
+
+                    controllerRayObjectLight.intensity = 0;
+
                     if ((Time.time - m_LastSentMove) > k_MoveSendRateSeconds)
                     {
                         Debug.Log("The REquest has been processed");
@@ -353,8 +325,42 @@ namespace Unity.BossRoom.Gameplay.UserInput
                             }
                         }
                     }
-                }
 
+                    //after all of that, we can now set the controller movement to false
+                    m_ControllerMovement = false;
+                }
+                else if (m_ControllerMovement == true)
+                {
+                    Debug.Log("The request has been sent but for a controller this time");
+                    m_MoveRequest = false;
+                    
+                    if ((Time.time - m_LastSentMove) > k_MoveSendRateSeconds)
+                    {
+                         //remember transform.forward is the z axis
+                        var ray = new Ray(controllerRayObject.transform.position, controllerRayObject.transform.up * -1);
+
+                        var groundHits = Physics.RaycastNonAlloc(ray, k_CachedHit, k_MouseInputRaycastDistance, m_GroundLayerMask);
+
+                        Vector3 directionOfRay = ray.direction;
+
+                        Debug.DrawRay(ray.origin, directionOfRay);
+
+                        if(groundHits > 1)
+                        {
+                            Array.Sort(k_CachedHit, 0, groundHits, m_RaycastHitComparer);
+                        }
+
+                        if(NavMesh.SamplePosition(k_CachedHit[0].point, out var hit, k_MaxNavMeshDistance, NavMesh.AllAreas))
+                        {
+                            m_ServerCharacter.ServerSendCharacterInputRpc(hit.position);
+
+                            ClientMoveEvent?.Invoke(hit.position);
+                            m_ControllerMovement = false;
+                        }
+
+                    }
+                   
+                }
             }
         }
 
@@ -783,13 +789,15 @@ namespace Unity.BossRoom.Gameplay.UserInput
         //we will try to replicate the raycast based movement
         public void InputMoveCharacter(InputAction.CallbackContext context)
         {
-            m_MoveRequest = true;
-
             if(context.performed)
             {
                 RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.Keyboard);
-            
+
                 m_ControllerMovement = true;
+
+                controllerRayObjectLight.intensity = 10;
+                m_MoveRequest = true;
+                
                 Debug.Log(context);
             }
         }  
