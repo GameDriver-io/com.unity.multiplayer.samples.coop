@@ -83,7 +83,7 @@
                     "id": "30620984-e3ac-4dab-aa5b-8d93f5e40830",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press",
+                    "interactions": "Press(behavior=2)",
                     "initialStateCheck": false
                 },
                 {
@@ -271,17 +271,6 @@
                 },
                 {
                     "name": "",
-                    "id": "f65c091a-3341-4b55-8220-b374ced85200",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "064be2d7-c20d-4fb3-bff2-3102c5e3cac0",
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "Hold",
@@ -404,6 +393,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "8f64d30f-16af-4b38-86c5-fb8f178ff546",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -426,6 +424,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "KillWindow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "13cd2e45-5417-4e3a-b519-9a5646554bc5",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

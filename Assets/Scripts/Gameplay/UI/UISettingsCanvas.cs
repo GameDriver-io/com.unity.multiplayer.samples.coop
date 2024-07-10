@@ -1,5 +1,9 @@
 using System;
+using Codice.Client.Commands;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
@@ -15,10 +19,19 @@ namespace Unity.BossRoom.Gameplay.UI
         [SerializeField]
         private GameObject m_QuitPanelRoot;
 
+        public bool isPausedGame;
+
+        private NewInputSystem inputSystem;
+
+        public Button defaultButton;
+
         void Awake()
         {
             // hide the settings window at startup (this is just to handle the common case where an artist forgets to disable the window in the prefab)
             DisablePanels();
+            //isPausedGame = true;
+
+            inputSystem.Menus.Pause.performed += OnPauseController;
         }
 
         void DisablePanels()
@@ -43,6 +56,31 @@ namespace Unity.BossRoom.Gameplay.UI
         {
             m_QuitPanelRoot.SetActive(!m_QuitPanelRoot.activeSelf);
             m_SettingsPanelRoot.SetActive(false);
+
+            isPausedGame = true;
+        }
+
+        public void OnPauseController(InputAction.CallbackContext context)
+        {
+            if(context.performed)
+            {                    
+                m_QuitPanelRoot.SetActive(!m_QuitPanelRoot.activeSelf);
+                m_SettingsPanelRoot.SetActive(false);
+
+                Debug.Log("Something Should have happened");
+
+                if(isPausedGame)
+                {
+                    isPausedGame = false;
+                }
+                else if (!isPausedGame)
+                {
+                    //now we can pause the game and the following things will happen
+                    isPausedGame = true;
+
+                    defaultButton.Select();
+                }
+            }
         }
 
     }

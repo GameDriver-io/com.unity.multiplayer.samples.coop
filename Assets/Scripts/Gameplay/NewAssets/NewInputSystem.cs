@@ -105,7 +105,7 @@ public partial class @NewInputSystem: IInputActionCollection2, IDisposable
                     ""id"": ""30620984-e3ac-4dab-aa5b-8d93f5e40830"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press"",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -293,17 +293,6 @@ public partial class @NewInputSystem: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f65c091a-3341-4b55-8220-b374ced85200"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""064be2d7-c20d-4fb3-bff2-3102c5e3cac0"",
                     ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": ""Hold"",
@@ -426,6 +415,15 @@ public partial class @NewInputSystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""8f64d30f-16af-4b38-86c5-fb8f178ff546"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -448,6 +446,17 @@ public partial class @NewInputSystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""KillWindow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""13cd2e45-5417-4e3a-b519-9a5646554bc5"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -473,6 +482,7 @@ public partial class @NewInputSystem: IInputActionCollection2, IDisposable
         // Menus
         m_Menus = asset.FindActionMap("Menus", throwIfNotFound: true);
         m_Menus_KillWindow = m_Menus.FindAction("KillWindow", throwIfNotFound: true);
+        m_Menus_Pause = m_Menus.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -669,11 +679,13 @@ public partial class @NewInputSystem: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Menus;
     private List<IMenusActions> m_MenusActionsCallbackInterfaces = new List<IMenusActions>();
     private readonly InputAction m_Menus_KillWindow;
+    private readonly InputAction m_Menus_Pause;
     public struct MenusActions
     {
         private @NewInputSystem m_Wrapper;
         public MenusActions(@NewInputSystem wrapper) { m_Wrapper = wrapper; }
         public InputAction @KillWindow => m_Wrapper.m_Menus_KillWindow;
+        public InputAction @Pause => m_Wrapper.m_Menus_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Menus; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -686,6 +698,9 @@ public partial class @NewInputSystem: IInputActionCollection2, IDisposable
             @KillWindow.started += instance.OnKillWindow;
             @KillWindow.performed += instance.OnKillWindow;
             @KillWindow.canceled += instance.OnKillWindow;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IMenusActions instance)
@@ -693,6 +708,9 @@ public partial class @NewInputSystem: IInputActionCollection2, IDisposable
             @KillWindow.started -= instance.OnKillWindow;
             @KillWindow.performed -= instance.OnKillWindow;
             @KillWindow.canceled -= instance.OnKillWindow;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IMenusActions instance)
@@ -728,5 +746,6 @@ public partial class @NewInputSystem: IInputActionCollection2, IDisposable
     public interface IMenusActions
     {
         void OnKillWindow(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

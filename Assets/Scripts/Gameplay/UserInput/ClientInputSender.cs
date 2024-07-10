@@ -5,6 +5,7 @@ using Unity.BossRoom.Gameplay.Actions;
 using Unity.BossRoom.Gameplay.Configuration;
 using Unity.BossRoom.Gameplay.GameplayObjects;
 using Unity.BossRoom.Gameplay.GameplayObjects.Character;
+using Unity.BossRoom.Gameplay.UI;
 using Unity.Multiplayer.Samples.BossRoom;
 using Unity.Netcode;
 using UnityEngine;
@@ -12,6 +13,7 @@ using UnityEngine.AI;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -111,6 +113,8 @@ namespace Unity.BossRoom.Gameplay.UserInput
 
         public event Action<Vector3> ClientMoveEvent;
 
+        private UISettingsCanvas uiManager;
+
         /// <summary>
         /// Convenience getter that returns our CharacterData
         /// </summary>
@@ -146,11 +150,13 @@ namespace Unity.BossRoom.Gameplay.UserInput
             
             inputSystem = new NewInputSystem();
 
-            inputSystem.Game.Rotate.performed += InputRotateCharacter; 
+            //inputSystem.Game.Rotate.performed += InputRotateCharacter; 
             inputSystem.Game.Aim.performed += OnAim;
 
             controllerRayObject = GameObject.Find("ControllerRayObject").GetComponent<Transform>();
             controllerRayObjectLight = GameObject.Find("TestPointLight").GetComponent<Light>();
+
+            uiManager = GameObject.Find("SettingsPanelCanvas").GetComponent<UISettingsCanvas>();
         }
 
         public override void OnNetworkSpawn()
@@ -242,7 +248,7 @@ namespace Unity.BossRoom.Gameplay.UserInput
 
         void FixedUpdate()
         {
-            Debug.Log(m_ControllerMovement);
+            //Debug.Log(m_ControllerMovement);
 
             Vector2 inputVector = inputSystem.Game.Rotate.ReadValue<Vector2>();
 
@@ -287,6 +293,7 @@ namespace Unity.BossRoom.Gameplay.UserInput
             //moving the character to a certain position
             if (m_MoveRequest)
             {
+                //for when we use the mouse
                 if (m_ControllerMovement == false)
                 {
                     Debug.Log("The request has been sent");
@@ -355,11 +362,10 @@ namespace Unity.BossRoom.Gameplay.UserInput
                             m_ServerCharacter.ServerSendCharacterInputRpc(hit.position);
 
                             ClientMoveEvent?.Invoke(hit.position);
-                            m_ControllerMovement = false;
+                            
                         }
-
                     }
-                   
+                    m_ControllerMovement = false;
                 }
             }
         }
@@ -655,10 +661,7 @@ namespace Unity.BossRoom.Gameplay.UserInput
                         m_MoveRequest = true;
                     }
                 }
-            }
-            
-            
-            
+            }   
         }
 
 #region New input System Stuff
@@ -764,24 +767,24 @@ namespace Unity.BossRoom.Gameplay.UserInput
         //Here is what we will try to do
         //  Initate a move request.
         //
-        public void InputRotateCharacter(InputAction.CallbackContext context)
-        {
-            // if(context.performed)
-            // {
-                // RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.Keyboard);
+        // public void InputRotateCharacter(InputAction.CallbackContext context)
+        // {
+        //     // if(context.performed)
+        //     // {
+        //         // RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.Keyboard);
   
-                // m_RotateRequest = true;
+        //         // m_RotateRequest = true;
 
-                // Vector2 inputVector = context.ReadValue<Vector2>();
-                // //Vector3 newSpeed = inputVector;
+        //         // Vector2 inputVector = context.ReadValue<Vector2>();
+        //         // //Vector3 newSpeed = inputVector;
 
-                // m_ServerCharacter.ServerSendRotation(inputVector);
-            // }
-            // else
-            // {
-            //     m_RotateRequest = false;
-            // }
-        }
+        //         // m_ServerCharacter.ServerSendRotation(inputVector);
+        //     // }
+        //     // else
+        //     // {
+        //     //     m_RotateRequest = false;
+        //     // }
+        // }
 
         //for moving the character. This is what we will do
         //when we are moving the character by holding down the move button,
@@ -789,17 +792,23 @@ namespace Unity.BossRoom.Gameplay.UserInput
         //we will try to replicate the raycast based movement
         public void InputMoveCharacter(InputAction.CallbackContext context)
         {
-            if(context.performed)
-            {
-                RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.Keyboard);
+            // if(m_CurrentSkillInput == null && uiManager.isPausedGame == false)
+            // {
+            //     if(!EventSystem.current.IsPointerOverGameObject())
+            //     {
+                    if(context.performed)
+                    {
+                        RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.Keyboard);
 
-                m_ControllerMovement = true;
+                        m_ControllerMovement = true;
 
-                controllerRayObjectLight.intensity = 10;
-                m_MoveRequest = true;
+                        controllerRayObjectLight.intensity = 10;
+                        m_MoveRequest = true;
                 
-                Debug.Log(context);
-            }
+                        Debug.Log(context);
+                    }
+            //     }
+            // }
         }  
 
 #endregion        

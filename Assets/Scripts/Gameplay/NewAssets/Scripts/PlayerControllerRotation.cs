@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.BossRoom.Gameplay.UI;
 using Unity.Multiplayer.Samples.BossRoom;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,6 +16,8 @@ public class PlayerControllerRotation : MonoBehaviour
     private Light controllerRayObjectLight;
     public NewInputSystem input;
 
+    public UISettingsCanvas uiManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +28,7 @@ public class PlayerControllerRotation : MonoBehaviour
     {
         //input.Game.Movement.performed += InputRotateObject;
         controllerRayObjectLight = GameObject.Find("TestPointLight").GetComponent<Light>();
+        uiManager = GameObject.Find("SettingsPanelCanvas").GetComponent<UISettingsCanvas>();
     }
 
     public void InputRotateObject(InputAction.CallbackContext context)
@@ -39,19 +43,23 @@ public class PlayerControllerRotation : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 movement = new Vector3(movementVector.x, 0, movementVector.y);
-        movement.Normalize();
+        // if(uiManager.isPausedGame == false)
+        // {
+            Vector3 movement = new Vector3(movementVector.x, 0, movementVector.y);
+            movement.Normalize();
 
-        this.transform.Translate(aimSpeed * movement * Time.deltaTime);
+            this.transform.Translate(aimSpeed * movement * Time.deltaTime);
 
-        if(movement.x >= maxMovementX)
-        {
-            movement.x = maxMovementX;
-        }
+            if(movement.x >= maxMovementX)
+            {
+                movement.x = maxMovementX;
+            }
 
-        if(movement.y >= maxMovementY)
-        {
-            movement.y = maxMovementY;
-        }
+            if(movement.y >= maxMovementY)
+            {
+                movement.y = maxMovementY;
+            }
+        // }
     }
+
 }
