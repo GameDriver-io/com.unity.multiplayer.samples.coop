@@ -1,8 +1,12 @@
 using System;
 using Codice.Client.Commands;
+using Unity.BossRoom.Gameplay.GameplayObjects.Character;
+using Unity.Services.Lobbies.Models;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 
 namespace Unity.BossRoom.Gameplay.UI
@@ -24,6 +28,8 @@ namespace Unity.BossRoom.Gameplay.UI
         private NewInputSystem inputSystem;
 
         public Button defaultButton;
+
+        public GameObject curPlayer;
 
         void Awake()
         {
@@ -81,6 +87,12 @@ namespace Unity.BossRoom.Gameplay.UI
                     defaultButton.Select();
                 }
             }
+        }
+
+        public void ForceNullEventSystem()
+        {
+            //EventSystem.SetSelectedGameObject(curPlayer);
+            Debug.Log("ForceNullEventSystem was called");
         }
 
     }

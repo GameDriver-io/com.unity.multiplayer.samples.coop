@@ -570,6 +570,8 @@ namespace Unity.BossRoom.Gameplay.UserInput
 //if this implementation doesnt work, will will refactor all of these as functions for the input system to take
         void Update()
         {
+            Debug.Log(EventSystem.current);
+
             #region The old input system
             //1 key
             //if (Input.GetKeyDown(KeyCode.Alpha1) && CharacterClass.Skill1)
@@ -792,7 +794,7 @@ namespace Unity.BossRoom.Gameplay.UserInput
         //we will try to replicate the raycast based movement
         public void InputMoveCharacter(InputAction.CallbackContext context)
         {
-            // if(m_CurrentSkillInput == null && uiManager.isPausedGame == false)
+            // if(m_CurrentSkillInput == null)
             // {
             //     if(!EventSystem.current.IsPointerOverGameObject())
             //     {
