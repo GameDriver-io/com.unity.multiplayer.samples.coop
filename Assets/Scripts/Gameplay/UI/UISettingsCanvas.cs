@@ -37,7 +37,12 @@ namespace Unity.BossRoom.Gameplay.UI
             DisablePanels();
             //isPausedGame = true;
 
-            inputSystem.Menus.Pause.performed += OnPauseController;
+            if(inputSystem != null)
+            {
+                Debug.Log("The input system can pause with a controller now");
+                inputSystem.Menus.Pause.performed += OnPauseController;
+            }
+            
         }
 
         void DisablePanels()
