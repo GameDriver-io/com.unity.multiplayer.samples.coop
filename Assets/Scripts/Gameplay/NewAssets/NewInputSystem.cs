@@ -424,6 +424,24 @@ public partial class @NewInputSystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""KeyboardEnable"",
+                    ""type"": ""Button"",
+                    ""id"": ""20388fff-27bd-4239-b8c7-2e89a508e878"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""KeyboardDisable"",
+                    ""type"": ""Button"",
+                    ""id"": ""bd5ef77a-8fb4-4346-8a6a-4c8641222071"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -459,6 +477,28 @@ public partial class @NewInputSystem: IInputActionCollection2, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9172bfc6-ebad-491a-88d8-f113794f9aba"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeyboardEnable"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f5da7847-0553-4434-9b89-f09fc7d6e51c"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeyboardDisable"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -483,6 +523,8 @@ public partial class @NewInputSystem: IInputActionCollection2, IDisposable
         m_Menus = asset.FindActionMap("Menus", throwIfNotFound: true);
         m_Menus_KillWindow = m_Menus.FindAction("KillWindow", throwIfNotFound: true);
         m_Menus_Pause = m_Menus.FindAction("Pause", throwIfNotFound: true);
+        m_Menus_KeyboardEnable = m_Menus.FindAction("KeyboardEnable", throwIfNotFound: true);
+        m_Menus_KeyboardDisable = m_Menus.FindAction("KeyboardDisable", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -680,12 +722,16 @@ public partial class @NewInputSystem: IInputActionCollection2, IDisposable
     private List<IMenusActions> m_MenusActionsCallbackInterfaces = new List<IMenusActions>();
     private readonly InputAction m_Menus_KillWindow;
     private readonly InputAction m_Menus_Pause;
+    private readonly InputAction m_Menus_KeyboardEnable;
+    private readonly InputAction m_Menus_KeyboardDisable;
     public struct MenusActions
     {
         private @NewInputSystem m_Wrapper;
         public MenusActions(@NewInputSystem wrapper) { m_Wrapper = wrapper; }
         public InputAction @KillWindow => m_Wrapper.m_Menus_KillWindow;
         public InputAction @Pause => m_Wrapper.m_Menus_Pause;
+        public InputAction @KeyboardEnable => m_Wrapper.m_Menus_KeyboardEnable;
+        public InputAction @KeyboardDisable => m_Wrapper.m_Menus_KeyboardDisable;
         public InputActionMap Get() { return m_Wrapper.m_Menus; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -701,6 +747,12 @@ public partial class @NewInputSystem: IInputActionCollection2, IDisposable
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
+            @KeyboardEnable.started += instance.OnKeyboardEnable;
+            @KeyboardEnable.performed += instance.OnKeyboardEnable;
+            @KeyboardEnable.canceled += instance.OnKeyboardEnable;
+            @KeyboardDisable.started += instance.OnKeyboardDisable;
+            @KeyboardDisable.performed += instance.OnKeyboardDisable;
+            @KeyboardDisable.canceled += instance.OnKeyboardDisable;
         }
 
         private void UnregisterCallbacks(IMenusActions instance)
@@ -711,6 +763,12 @@ public partial class @NewInputSystem: IInputActionCollection2, IDisposable
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
+            @KeyboardEnable.started -= instance.OnKeyboardEnable;
+            @KeyboardEnable.performed -= instance.OnKeyboardEnable;
+            @KeyboardEnable.canceled -= instance.OnKeyboardEnable;
+            @KeyboardDisable.started -= instance.OnKeyboardDisable;
+            @KeyboardDisable.performed -= instance.OnKeyboardDisable;
+            @KeyboardDisable.canceled -= instance.OnKeyboardDisable;
         }
 
         public void RemoveCallbacks(IMenusActions instance)
@@ -747,5 +805,7 @@ public partial class @NewInputSystem: IInputActionCollection2, IDisposable
     {
         void OnKillWindow(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnKeyboardEnable(InputAction.CallbackContext context);
+        void OnKeyboardDisable(InputAction.CallbackContext context);
     }
 }
