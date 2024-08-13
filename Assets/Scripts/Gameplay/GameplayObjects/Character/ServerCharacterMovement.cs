@@ -251,7 +251,7 @@ namespace Unity.BossRoom.Gameplay.GameplayObjects.Character
             }
             else
             {
-                Debug.Log("Lets Move!");
+                //Debug.Log("Lets Move!");
 
                 var desiredMovementAmount = GetBaseMovementSpeed() * Time.fixedDeltaTime;
                 movementVector = m_NavPath.MoveAlongPath(desiredMovementAmount);

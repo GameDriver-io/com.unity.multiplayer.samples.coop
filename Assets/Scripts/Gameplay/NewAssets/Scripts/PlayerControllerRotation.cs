@@ -37,7 +37,7 @@ public class PlayerControllerRotation : MonoBehaviour
 
         movementVector = context.ReadValue<Vector2>();
 
-        Debug.Log(context);
+        //Debug.Log(context);
     }
 
     // Update is called once per frame

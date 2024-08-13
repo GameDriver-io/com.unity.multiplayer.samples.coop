@@ -338,7 +338,7 @@ namespace Unity.BossRoom.Gameplay.UserInput
                 }
                 else if (m_ControllerMovement == true)
                 {
-                    Debug.Log("The request has been sent but for a controller this time");
+                    //Debug.Log("The request has been sent but for a controller this time");
                     m_MoveRequest = false;
                     
                     if ((Time.time - m_LastSentMove) > k_MoveSendRateSeconds)
@@ -375,7 +375,7 @@ namespace Unity.BossRoom.Gameplay.UserInput
             mousePosition = context.ReadValue<Vector2>();
             newMousePosition = mousePosition;
 
-            Debug.Log(newMousePosition);
+            //Debug.Log(newMousePosition);
         }
 
         /// <summary>
@@ -570,7 +570,7 @@ namespace Unity.BossRoom.Gameplay.UserInput
 //if this implementation doesnt work, will will refactor all of these as functions for the input system to take
         void Update()
         {
-            Debug.Log(EventSystem.current);
+            //Debug.Log(EventSystem.current);
 
             #region The old input system
             //1 key
@@ -807,7 +807,7 @@ namespace Unity.BossRoom.Gameplay.UserInput
                         controllerRayObjectLight.intensity = 10;
                         m_MoveRequest = true;
                 
-                        Debug.Log(context);
+                        //Debug.Log(context);
                     }
             //     }
             // }
