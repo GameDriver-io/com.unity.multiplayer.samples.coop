@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEditor.Search;
+//using UnityEditor.Search;
 
 namespace Unity.Multiplayer.Samples.BossRoom
 {

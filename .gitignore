@@ -9,6 +9,7 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
+/Assets/GDIO/
 
 # output dir
 /Bin/
@@ -86,3 +87,10 @@ InitCodeMarker
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+
+# GameDriver license files
+*.license.txt
+*.license.txt.meta
+
+# macOS desktop files
+.DS_Store
