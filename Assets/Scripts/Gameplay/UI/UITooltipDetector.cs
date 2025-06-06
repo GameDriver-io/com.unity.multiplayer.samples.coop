@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
@@ -78,7 +79,8 @@ namespace Unity.BossRoom.Gameplay.UI
         {
             if (!m_IsShowingTooltip)
             {
-                m_TooltipPopup.ShowTooltip(m_TooltipText, Input.mousePosition);
+                //m_TooltipPopup.ShowTooltip(m_TooltipText, Input.mousePosition);
+                m_TooltipPopup.ShowTooltip(m_TooltipText, Mouse.current.position.ReadValue());
                 m_IsShowingTooltip = true;
             }
         }

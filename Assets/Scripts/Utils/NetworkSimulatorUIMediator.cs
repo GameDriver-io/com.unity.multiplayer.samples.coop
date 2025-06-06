@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
 using Unity.Multiplayer.Tools.NetworkSimulator.Runtime;
 using Unity.Multiplayer.Tools.NetworkSimulator.Runtime.BuiltInScenarios;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using TouchPhase = UnityEngine.TouchPhase;
 
 namespace Unity.BossRoom.Utils
 {
@@ -58,6 +61,10 @@ namespace Unity.BossRoom.Utils
         const string k_RandomConnectionSwapScenarioName = "Random Connections Swap";
         const string k_PauseString = "Pause";
         const string k_ResumeString = "Resume";
+        
+        [SerializeField]
+        InputActionAsset _inputActions;
+        private InputAction _netSimAction;
 
         void Awake()
         {
@@ -81,6 +88,9 @@ namespace Unity.BossRoom.Utils
         {
             NetworkManager.Singleton.OnClientStarted += OnNetworkManagerStarted;
             NetworkManager.Singleton.OnServerStarted += OnNetworkManagerStarted;
+            //_inputActions = Resources.Load<InputActionAsset>("Assets/Scripts/Gameplay/NewAssets/NewInputSystem");
+            _netSimAction = _inputActions.FindAction("Debug/NetSim");
+            _netSimAction.Enable();
         }
 
         void OnDestroy()
@@ -206,8 +216,9 @@ namespace Unity.BossRoom.Utils
         {
             if (m_NetworkSimulator.IsAvailable)
             {
-                if (Input.touchCount == k_NbTouchesToOpenWindow && AnyTouchDown() ||
-                    m_OpenWindowKeyCode != KeyCode.None && Input.GetKeyDown(m_OpenWindowKeyCode))
+               // if (Input.touchCount == k_NbTouchesToOpenWindow && AnyTouchDown() ||
+               if(Touchscreen.current.touches.Count(touch => touch.isInProgress) == k_NbTouchesToOpenWindow && AnyTouchDown() ||
+                    m_OpenWindowKeyCode != KeyCode.None && _netSimAction.WasPressedThisFrame())//Input.GetKeyDown(m_OpenWindowKeyCode))
                 {
                     ToggleVisibility();
                 }
@@ -236,13 +247,15 @@ namespace Unity.BossRoom.Utils
 
         static bool AnyTouchDown()
         {
-            foreach (var touch in Input.touches)
+            /*foreach (var touch in Input.touches)
             {
                 if (touch.phase == TouchPhase.Began)
                 {
                     return true;
                 }
-            }
+            }*/
+            if(Touchscreen.current.touches.Any(touch=> touch.ReadValue().phase == UnityEngine.InputSystem.TouchPhase.Began))
+                return true;
             return false;
         }
 

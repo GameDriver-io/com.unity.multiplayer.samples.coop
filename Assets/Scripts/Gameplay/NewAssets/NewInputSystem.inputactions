@@ -9,7 +9,7 @@
                     "name": "Skill1",
                     "type": "Button",
                     "id": "c0debfdb-85a7-4dee-9185-c7240b9fb414",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": false
@@ -27,7 +27,7 @@
                     "name": "Skill3",
                     "type": "Button",
                     "id": "7bb82207-f903-4c50-af1a-eef9d959c12c",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -36,7 +36,7 @@
                     "name": "Skill4",
                     "type": "Button",
                     "id": "c9fcaaa9-6e86-42f4-8209-364d94d28fa0",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -45,7 +45,7 @@
                     "name": "Emote1",
                     "type": "Button",
                     "id": "2bb11108-2af0-4460-b1e5-d0d387233d5e",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -54,7 +54,7 @@
                     "name": "Emote2",
                     "type": "Button",
                     "id": "9849a1b9-3fe4-4ec3-8b1a-d10c43cba5df",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -150,6 +150,17 @@
                 },
                 {
                     "name": "",
+                    "id": "bbafdaad-fb2a-488f-83ff-2bf63e0cdf52",
+                    "path": "<Keyboard>/numpad1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skill1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "fb909a06-873e-4e81-bdbb-d505f40615ba",
                     "path": "<Keyboard>/2",
                     "interactions": "",
@@ -163,6 +174,17 @@
                     "name": "",
                     "id": "53e73ba2-fb32-443c-91ce-1c94fe088428",
                     "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skill2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "37aa94a5-84bc-4170-9108-982b79f12aea",
+                    "path": "<Keyboard>/numpad2",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -194,8 +216,30 @@
                 },
                 {
                     "name": "",
+                    "id": "92e6d3bb-21d1-4a6b-a9fb-0bebef7f14d8",
+                    "path": "<Keyboard>/numpad3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skill3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "46dfb9a2-5ef6-4728-aaef-82d5f18ca87d",
                     "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skill4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bf5744cd-8749-40dd-ae59-84a39d1311bc",
+                    "path": "<Keyboard>/numpad4",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -389,7 +433,7 @@
                     "name": "KillWindow",
                     "type": "Button",
                     "id": "8ed8f52c-ec45-4c35-9977-177da1d615be",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -398,7 +442,7 @@
                     "name": "Pause",
                     "type": "Button",
                     "id": "8f64d30f-16af-4b38-86c5-fb8f178ff546",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -407,7 +451,7 @@
                     "name": "KeyboardEnable",
                     "type": "Button",
                     "id": "20388fff-27bd-4239-b8c7-2e89a508e878",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -416,7 +460,34 @@
                     "name": "KeyboardDisable",
                     "type": "Button",
                     "id": "bd5ef77a-8fb4-4346-8a6a-4c8641222071",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LeftClick",
+                    "type": "Button",
+                    "id": "c520d014-4aa2-4574-b803-275dc5a189b5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RightClick",
+                    "type": "Button",
+                    "id": "274d2537-cf97-4372-b51e-b3cdf5660aab",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MiddleClick",
+                    "type": "Button",
+                    "id": "d39d03c4-8222-4262-8db1-981120256986",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -475,6 +546,87 @@
                     "processors": "",
                     "groups": "",
                     "action": "KeyboardDisable",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9ea8d2fa-32d3-44c3-a94b-9b78eccdc403",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d41805d1-e9c9-476b-a5e1-707e0adc59db",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7b537ebc-f174-4571-8c61-2d0b9c10cfd4",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MiddleClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Debug",
+            "id": "81ac8e36-55c1-4d79-ab25-c9af1c2a5893",
+            "actions": [
+                {
+                    "name": "Stats",
+                    "type": "Button",
+                    "id": "5bc21c7f-b783-46db-914e-9656b8439207",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "NetSim",
+                    "type": "Button",
+                    "id": "9779fd8d-99a8-4909-a2dd-cce89eb8dafe",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b37d205c-4d54-47d0-9589-f16872d206fc",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Stats",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b86b7861-3602-4871-b4a6-e371dd1b9ae9",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NetSim",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

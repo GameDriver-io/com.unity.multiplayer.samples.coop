@@ -143,6 +143,11 @@ namespace Unity.BossRoom.Gameplay.UserInput
 
         [SerializeField] Transform controllerRayObject;
         [SerializeField] Light controllerRayObjectLight;
+        
+        InputActionAsset _inputActions;
+        private InputAction _leftClickAction;
+        private InputAction _rightClickAction;
+        private InputAction _middleClickAction;
         void Awake()
         {
             m_MainCamera = Camera.main;
@@ -157,6 +162,17 @@ namespace Unity.BossRoom.Gameplay.UserInput
             controllerRayObjectLight = GameObject.Find("TestPointLight").GetComponent<Light>();
 
             uiManager = GameObject.Find("SettingsPanelCanvas").GetComponent<UISettingsCanvas>();
+        }
+
+        void Start()
+        {
+            _inputActions = Resources.Load<InputActionAsset>("Assets/Scripts/Gameplay/NewAssets/NewInputSystem");
+            _leftClickAction = _inputActions.FindAction("Menus/LeftClick");
+            _leftClickAction.Enable();
+            _rightClickAction = _inputActions.FindAction("Menus/RightClick");
+            _rightClickAction.Enable();
+            _middleClickAction = _inputActions.FindAction("Menus/MiddleClick");
+            _middleClickAction.Enable();
         }
 
         public override void OnNetworkSpawn()
@@ -645,20 +661,23 @@ namespace Unity.BossRoom.Gameplay.UserInput
                     //to model the button "blocking" mouse clicks from falling through and interacting with the world.
 
                     //right mouse button
-                    if (Input.GetMouseButtonDown(1))
+                    //if (Input.GetMouseButtonDown(1))
+                    if(_rightClickAction.WasPressedThisFrame())
                     {
                         RequestAction(CharacterClass.Skill1.ActionID, SkillTriggerStyle.MouseClick);
                     }
 
                     //left mouse button
-                    if (Input.GetMouseButtonDown(0))
+                    //if (Input.GetMouseButtonDown(0))
                     //if(newInput.move == true || Input.GetMouseButtonDown(0))
+                    if(_leftClickAction.WasPressedThisFrame())
                     {
                         RequestAction(GameDataSource.Instance.GeneralTargetActionPrototype.ActionID, SkillTriggerStyle.MouseClick);
                         Debug.Log("You should be moving right now");
                     }
-                    else if (Input.GetMouseButton(0))
+                    //else if (Input.GetMouseButton(0))
                     //else if(newInput.move == true || Input.GetMouseButtonDown(0))
+                    else if(Mouse.current.leftButton.isPressed)
                     {
                         m_MoveRequest = true;
                     }
