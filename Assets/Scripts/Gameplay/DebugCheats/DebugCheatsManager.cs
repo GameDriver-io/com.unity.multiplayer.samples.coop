@@ -1,3 +1,4 @@
+using System.Linq;
 using Unity.BossRoom.ConnectionManagement;
 using Unity.BossRoom.Gameplay.GameplayObjects;
 using Unity.BossRoom.Gameplay.GameplayObjects.Character;
@@ -7,6 +8,7 @@ using Unity.Multiplayer.Samples.BossRoom;
 using Unity.Multiplayer.Samples.Utilities;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using VContainer;
 
 namespace Unity.BossRoom.DebugCheats
@@ -52,11 +54,22 @@ namespace Unity.BossRoom.DebugCheats
 
         [Inject]
         IPublisher<CheatUsedMessage> m_CheatUsedMessagePublisher;
+        
+        InputActionAsset _inputActions;
+        private InputAction _cheatAction;
+
+        void Start()
+        {
+            _inputActions = Resources.Load<InputActionAsset>("NewInputSystem");
+            _cheatAction = _inputActions.FindAction("Debug/Cheat");
+            _cheatAction.Enable();
+        }
 
         void Update()
         {
-            if (Input.touchCount == k_NbTouchesToOpenWindow && AnyTouchDown() ||
-                m_OpenWindowKeyCode != KeyCode.None && Input.GetKeyDown(m_OpenWindowKeyCode))
+            //if (Input.touchCount == k_NbTouchesToOpenWindow && AnyTouchDown() ||
+            if (Touchscreen.current.touches.Count(touch => touch.isInProgress) == k_NbTouchesToOpenWindow && AnyTouchDown() ||
+                m_OpenWindowKeyCode != KeyCode.None && _cheatAction.WasPressedThisFrame())//Input.GetKeyDown(m_OpenWindowKeyCode))
             {
                 m_DebugCheatsPanel.SetActive(!m_DebugCheatsPanel.activeSelf);
             }
@@ -64,13 +77,15 @@ namespace Unity.BossRoom.DebugCheats
 
         static bool AnyTouchDown()
         {
-            foreach (var touch in Input.touches)
+            /*foreach (var touch in Input.touches)
             {
                 if (touch.phase == TouchPhase.Began)
                 {
                     return true;
                 }
-            }
+            }*/
+            if(Touchscreen.current.touches.Any(touch=> touch.ReadValue().phase == UnityEngine.InputSystem.TouchPhase.Began))
+                return true;
             return false;
         }
 

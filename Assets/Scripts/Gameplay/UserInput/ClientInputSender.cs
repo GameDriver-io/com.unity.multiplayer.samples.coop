@@ -166,7 +166,7 @@ namespace Unity.BossRoom.Gameplay.UserInput
 
         void Start()
         {
-            _inputActions = Resources.Load<InputActionAsset>("Assets/Scripts/Gameplay/NewAssets/NewInputSystem");
+            _inputActions = Resources.Load<InputActionAsset>("NewInputSystem");
             _leftClickAction = _inputActions.FindAction("Menus/LeftClick");
             _leftClickAction.Enable();
             _rightClickAction = _inputActions.FindAction("Menus/RightClick");
