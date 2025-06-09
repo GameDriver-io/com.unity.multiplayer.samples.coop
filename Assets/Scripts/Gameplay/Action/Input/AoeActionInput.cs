@@ -1,6 +1,7 @@
 using Unity.BossRoom.Gameplay.GameplayObjects;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 
 namespace Unity.BossRoom.Gameplay.Actions
 {
@@ -44,7 +45,8 @@ namespace Unity.BossRoom.Gameplay.Actions
 
         void Update()
         {
-            if (PlaneRaycast(k_Plane, m_Camera.ScreenPointToRay(Input.mousePosition), out Vector3 pointOnPlane) &&
+            //if (PlaneRaycast(k_Plane, m_Camera.ScreenPointToRay(Input.mousePosition), out Vector3 pointOnPlane) &&
+            if (PlaneRaycast(k_Plane, m_Camera.ScreenPointToRay(Mouse.current.position.ReadValue()), out Vector3 pointOnPlane) &&
                 NavMesh.SamplePosition(pointOnPlane, out m_NavMeshHit, 2f, NavMesh.AllAreas))
             {
                 transform.position = m_NavMeshHit.position;
