@@ -58,12 +58,14 @@ namespace Unity.BossRoom.Gameplay.Actions
             m_OutOfRangeVisualization.SetActive(!isInRange);
 
             // wait for the player to click down and then release the mouse button before actually taking the input
-            if (Input.GetMouseButtonDown(0))
+            //if (Input.GetMouseButtonDown(0))
+            if(Mouse.current.leftButton.wasPressedThisFrame)
             {
                 m_ReceivedMouseDownEvent = true;
             }
 
-            if (Input.GetMouseButtonUp(0) && m_ReceivedMouseDownEvent)
+            //if (Input.GetMouseButtonUp(0) && m_ReceivedMouseDownEvent)
+            if (Mouse.current.leftButton.wasReleasedThisFrame && m_ReceivedMouseDownEvent)
             {
                 if (isInRange)
                 {
